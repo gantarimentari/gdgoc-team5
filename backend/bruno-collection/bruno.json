@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Sift Backend - Bruno API Testing Collection",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
