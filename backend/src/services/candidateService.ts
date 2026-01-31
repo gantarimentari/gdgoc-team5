@@ -1,7 +1,7 @@
-import prisma from "../config/prisma";
-import { supabase } from "../config/supabase";
-import { AppError } from "../utils/AppError";
-import { processCV } from "../utils/cvProcessor";
+import prisma from "../config/prisma.js";
+import { supabase } from "../config/supabase.js";
+import { AppError } from "../utils/AppError.js";
+import { processCV } from "../utils/cvProcessor.js";
 
 export interface CreateCandidateInput {
   jobId: string;

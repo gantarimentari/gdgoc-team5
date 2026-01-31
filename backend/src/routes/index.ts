@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import authRoutes from './authRoutes';
-import jobRoutes from './jobRoutes';
-import candidateRoutes from './candidateRoutes';
+import authRoutes from './authRoutes.js';
+import jobRoutes from './jobRoutes.js';
+import candidateRoutes from './candidateRoutes.js';
 
 const router = Router();
 

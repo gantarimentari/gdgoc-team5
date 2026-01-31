@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { CandidateService } from "../services/candidateService";
-import { catchAsync } from "../utils/catchAsync";
-import { AppError } from "../utils/AppError";
-import { supabase } from "../config/supabase";
+import { CandidateService } from "../services/candidateService.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
+import { supabase } from "../config/supabase.js";
 import path from "path";
 
 const bucketName = process.env.SUPABASE_BUCKET_NAME!;

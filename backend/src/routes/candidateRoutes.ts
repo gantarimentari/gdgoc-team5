@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { CandidateController } from '../controllers/candidateController';
-import { authenticate } from '../middleware/auth';
-import { upload } from '../middleware/upload';
+import { CandidateController } from '../controllers/candidateController.js';
+import { authenticate } from '../middleware/auth.js';
+import { upload } from '../middleware/upload.js';
 
 const router = Router();
 

@@ -2,10 +2,10 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './config/swagger';
-import { limiter } from './middleware/rateLimiter';
-import { errorHandler } from './middleware/errorHandler';
-import routes from './routes';
+import { swaggerSpec } from './config/swagger.js';
+import { limiter } from './middleware/rateLimiter.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import routes from './routes/index.js';
 
 const app: Application = express();
 
