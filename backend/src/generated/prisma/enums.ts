@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const JobStatus = {
+  Open: 'Open',
+  Closed: 'Closed'
+} as const
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
+
+
 export const CandidateStatus = {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
