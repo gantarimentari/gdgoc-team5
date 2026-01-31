@@ -87,3 +87,35 @@ export const createJob = async (jobData: object) => {
 
   return await response.json();
 };
+
+export const getJobById = async (id) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${BASE_URL}/jobs/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!response.ok) throw new Error('Gagal mengambil detail');
+  return response.json();
+};
+
+// Fungsi untuk menghapus job berdasarkan ID
+export const deleteJob = async (id) => {
+  const token = localStorage.getItem('token'); // Ambil kunci akses kamu
+  
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`, {
+    method: 'DELETE', // Gunakan metode DELETE
+    headers: {
+      'Authorization': `Bearer ${token}`, // Sertakan token agar tidak Error 401
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Gagal menghapus lowongan');
+  }
+
+  return response.json(); // Mengembalikan respon sukses dari Backend
+};
