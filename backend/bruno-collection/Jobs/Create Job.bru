@@ -1,0 +1,28 @@
+meta {
+  name: Create Job
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/jobs
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Senior Backend Engineer",
+    "description": "We are looking for an experienced backend engineer with strong skills in Node.js, TypeScript, and PostgreSQL. Must have 5+ years of experience and be familiar with microservices architecture."
+  }
+}
+
+tests {
+  test("should return 201", function() {
+    expect(res.status).to.equal(201);
+  });
+}

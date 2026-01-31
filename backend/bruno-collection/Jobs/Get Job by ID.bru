@@ -1,0 +1,25 @@
+meta {
+  name: Get Job by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/jobs/:jobId
+  body: none
+  auth: bearer
+}
+
+params:path {
+  jobId: YOUR_JOB_ID_HERE
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+tests {
+  test("should return 200", function() {
+    expect(res.status).to.equal(200);
+  });
+}

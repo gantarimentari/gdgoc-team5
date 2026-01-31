@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jobs      Job[]
+}
+
+model Job {
+  id          String      @id @default(uuid())
+  title       String
+  description String      @db.Text
+  status      String      @default("OPEN") // OPEN, CLOSED
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  candidates  Candidate[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum CandidateStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Candidate {
+  id               String          @id @default(uuid())
+  name             String?
+  email            String?
+  fileUrl          String
+  originalFilename String
+  status           CandidateStatus @default(PENDING)
+  score            Int             @default(0)
+  summary          String?         @db.Text
+  pros             String[]
+  cons             String[]
+  skills           String[]
+  errorLog         String?
+  jobId            String
+  job              Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([jobId])
+}
