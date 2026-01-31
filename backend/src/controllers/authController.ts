@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { AuthService } from "../services/authService";
-import { catchAsync } from "../utils/catchAsync";
+import { AuthService } from "../services/authService.js";
+import { catchAsync } from "../utils/catchAsync.js";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email format"),

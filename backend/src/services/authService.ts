@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma";
-import { AppError } from "../utils/AppError";
+import prisma from "../config/prisma.js";
+import { AppError } from "../utils/AppError.js";
 
 export interface RegisterInput {
   email: string;

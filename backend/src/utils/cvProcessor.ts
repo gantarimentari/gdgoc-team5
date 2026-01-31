@@ -1,7 +1,7 @@
-import { ai, AI_MODEL } from "../config/gemini";
-import prisma from "../config/prisma";
-import { extractTextFromPDF, stripJsonFences } from "./pdfParser";
-import { CVAnalysisSchema } from "../schemas/cvAnalysis.schema";
+import { ai, AI_MODEL } from "../config/gemini.js";
+import prisma from "../config/prisma.js";
+import { extractTextFromPDF, stripJsonFences } from "./pdfParser.js";
+import { CVAnalysisSchema } from "../schemas/cvAnalysis.schema.js";
 
 export async function processCV(
   candidateId: string,

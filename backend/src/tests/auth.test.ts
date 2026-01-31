@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../app';
-import prisma from '../config/prisma';
+import app from '../app.js';
+import prisma from '../config/prisma.js';
 
 describe('Auth Endpoints', () => {
   beforeAll(async () => {

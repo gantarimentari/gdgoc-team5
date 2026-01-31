@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { JobService } from "../services/jobService";
-import { catchAsync } from "../utils/catchAsync";
+import { JobService } from "../services/jobService.js";
+import { catchAsync } from "../utils/catchAsync.js";
 
 const createJobSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),

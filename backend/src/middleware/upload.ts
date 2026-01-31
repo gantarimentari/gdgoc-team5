@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { AppError } from '../utils/AppError';
+import { AppError } from '../utils/AppError.js';
 
 // const uploadDir = process.env.UPLOAD_DIR || './uploads';
 // if (!fs.existsSync(uploadDir)) {
