@@ -5,10 +5,8 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
   const [pdfUrl, setPdfUrl] = useState(null);
 
   React.useEffect(() => {
-    if (candidate?.cvFile) {
-      const url = URL.createObjectURL(candidate.cvFile);
-      setPdfUrl(url);
-      return () => URL.revokeObjectURL(url);
+    if (candidate?.fileUrl) {
+      setPdfUrl(candidate.fileUrl);
     }
   }, [candidate]);
 
@@ -28,11 +26,15 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
 
   if (!isOpen || !candidate) return null;
 
-  const analysis = candidate.aiAnalysis || {};
-  const matchScore = analysis.matchScore || candidate.matchScore || 0;
-  const skillsBadges = analysis.skillsBadges || [];
-  const strengths = analysis.strengths || [];
-  const weaknesses = analysis.weaknesses || [];
+  // const candidateId =
+  const analysis = candidate.aiAnalysis || candidate;
+  const matchScore =  candidate.score || 0;
+  const skillsBadges = candidate.skills 
+    ? (Array.isArray(candidate.skills) ? candidate.skills : candidate.skills.split(','))
+    : [];
+  const strengths = candidate.pros || [];
+  const weaknesses = candidate.cons || [];
+  const summary = candidate.summary || '';
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -131,6 +133,16 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
                 </div>
               </div>
 
+              {/* Summary */}
+              {summary && (
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Summary</h3>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <p className="text-sm text-gray-700 leading-relaxed">{summary}</p>
+                  </div>
+                </div>
+              )}
+
               {/* Skills Badges */}
               {skillsBadges.length > 0 && (
                 <div className="mb-6">
@@ -205,10 +217,10 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
               <div className="border-t border-gray-200 pt-6">
                 <h3 className="text-sm font-semibold text-gray-900 mb-4">Candidate Information</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
+                  {/* <div>
                     <p className="text-xs text-gray-500">Experience</p>
                     <p className="text-sm font-medium text-gray-900 mt-1">{candidate.experience}</p>
-                  </div>
+                  </div> */}
                   <div>
                     <p className="text-xs text-gray-500">Match Score</p>
                     <p className="text-sm font-medium text-gray-900 mt-1">{matchScore}%</p>
@@ -219,7 +231,7 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Candidate ID</p>
-                    <p className="text-sm font-medium text-gray-900 mt-1">{candidate.cn}</p>
+                    <p className="text-sm font-medium text-gray-900 mt-1">{candidate.cn || candidate.id || candidate.candidateId || 'N/A'}</p>
                   </div>
                 </div>
               </div>
@@ -235,7 +247,7 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
           >
             Close
           </button>
-          <button 
+          {/* <button 
             onClick={handleApprove}
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
@@ -246,7 +258,7 @@ const CandidateDetailView = ({ isOpen, onClose, candidate, onStatusChange }) => 
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
           >
             Reject
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

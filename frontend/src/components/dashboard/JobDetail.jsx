@@ -1,9 +1,9 @@
 'use client';
-import React, { useState, useEffect } from 'react'; // Tambahkan useEffect di sini
-import { useRouter, useParams } from 'next/navigation'; // Gabungkan import useParams di sini
+import React, { useState, useEffect,useCallback } from 'react'; 
+import { useRouter, useParams } from 'next/navigation'; 
 import UploadCV from './modals/UploadCV';
 import CandidateDetailView from './modals/CandidateDetailView';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { getJobById, deleteJob } from '@/services/api'; // Pastikan import deleteJob ada
 
 const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
@@ -26,30 +26,53 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
   const [jobDescription, setJobDescription] = useState('');
 
   // 1. FUNGSI AMBIL DATA DARI DATABASE
-  useEffect(() => {
-    const fetchJobDetail = async () => {
-      try {
-        setLoading(true);
-        const response = await getJobById(params.id); 
+  // useEffect(() => {
+  //   const fetchJobDetail = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await getJobById(params.id); 
+  //       const jobData = response?.data?.job || response; 
         
-        // Sesuaikan dengan struktur data Backend (data.job atau langsung data)
-        const jobData = response?.data?.job || response; 
+  //       setJob(jobData);
+  //       setJobStatus(jobData.state || jobData.status || 'Active');
+  //       setJobDescription(jobData.description || '');
+  //       setCandidates(jobData.candidates || []);
         
-        setJob(jobData);
-        setJobStatus(jobData.state || jobData.status || 'Active');
-        setJobDescription(jobData.description || '');
-        setCandidates(jobData.candidates || []);
-        
-      } catch (error) {
-        console.error("Gagal ambil detail job:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //     } catch (error) {
+  //       console.error("Gagal ambil detail job:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (params.id) fetchJobDetail();
+  //   useEffect(() =>{
+  //     if (params.id) fetchJobDetail();
+  //   }, )
+  // }, [params.id]);
+  const fetchJobDetail = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await getJobById(params.id); 
+      const jobData = response?.data?.job || response?.data || response; 
+      
+      setJob(jobData);
+      setJobStatus(jobData.state || jobData.status || 'Active');
+      setJobDescription(jobData.description || '');
+      setCandidates(jobData.candidates || []);
+    } catch (error) {
+      console.error("Gagal ambil detail job:", error);
+    } finally {
+      setLoading(false);
+    }
   }, [params.id]);
 
+  useEffect(() => {
+    if (params.id) fetchJobDetail();
+  }, [params.id, fetchJobDetail]);
+
+  const handleUpload =()=>{
+    fetchJobDetail();
+  }
   // HANDLE NAVIGASI KEMBALI
   const handleBack = () => {
     if (onBack) {
@@ -62,22 +85,20 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
   // FILTER KANDIDAT
   const filteredCandidates = candidates.filter(candidate => {
     if (activeFilter === 'all') return true;
-    if (activeFilter === 'high-match') return candidate.matchScore >= 80;
-    if (activeFilter === 'needs-review') return candidate.status === 'Needs Review';
-    if (activeFilter === 'under-review') return candidate.status === 'Under Review';
+    if (activeFilter === 'high-match') return (candidate.score || candidate.matchScore || 0) >= 80;
+    // if (activeFilter === 'needs-review') return candidate.status === 'Needs Review';
+    // if (activeFilter === 'under-review') return candidate.status === 'Under Review';
     return true;
   });
 
   const counts = {
     all: candidates.length,
-    highMatch: candidates.filter(c => c.matchScore >= 80).length,
-    needsReview: candidates.filter(c => c.status === 'Needs Review').length,
-    underReview: candidates.filter(c => c.status === 'Under Review').length
+    highMatch: candidates.filter(c => (c.score || c.matchScore || 0) >= 80).length,
+    // needsReview: candidates.filter(c => c.status === 'Needs Review').length,
+    // underReview: candidates.filter(c => c.status === 'Under Review').length
   };
 
-  const handleUpload = (newCandidates) => {
-    setCandidates(prev => [...newCandidates, ...prev]);
-  };
+  
 
   const handleViewDetails = (candidate) => {
     setSelectedCandidate(candidate);
@@ -128,7 +149,7 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M15 18L9 12L15 6" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
           <h1 className="text-2xl font-bold text-gray-900">{job?.title || job?.roleTitle || 'Job Title'}</h1>
@@ -160,14 +181,14 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
 
       {/* Info Card */}
       <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Job Status</label>
+        {/* <label className="block text-sm font-medium text-gray-700 mb-2">Job Status</label>
         <span className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium ${jobStatus === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
           {jobStatus}
-        </span>
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Job Description</label>
+        </span> */}
+        {/* <div className="mt-6 pt-6 border-t border-gray-200"> */}
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Job Description</label>
           <p className="text-sm text-gray-900 whitespace-pre-wrap">{jobDescription || 'No description available'}</p>
-        </div>
+        {/* </div> */}
       </div>
 
       {/* Filter Tabs */}
@@ -178,12 +199,12 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
         <button onClick={() => setActiveFilter('high-match')} className={`px-4 py-2 rounded-md text-sm font-medium ${activeFilter === 'high-match' ? 'bg-gray-100 text-gray-900' : 'text-gray-600'}`}>
           &gt;80% Match {counts.highMatch}
         </button>
-        <button onClick={() => setActiveFilter('needs-review')} className={`px-4 py-2 rounded-md text-sm font-medium ${activeFilter === 'needs-review' ? 'bg-gray-100 text-gray-900' : 'text-gray-600'}`}>
+        {/* <button onClick={() => setActiveFilter('needs-review')} className={`px-4 py-2 rounded-md text-sm font-medium ${activeFilter === 'needs-review' ? 'bg-gray-100 text-gray-900' : 'text-gray-600'}`}>
           Needs Review {counts.needsReview}
         </button>
         <button onClick={() => setActiveFilter('under-review')} className={`px-4 py-2 rounded-md text-sm font-medium ${activeFilter === 'under-review' ? 'bg-gray-100 text-gray-900' : 'text-gray-600'}`}>
           Under Review {counts.underReview}
-        </button>
+        </button> */}
       </div>
 
       {/* Table */}
@@ -203,7 +224,7 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
               <tr key={candidate.id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
                 <td className="px-4 py-3 text-sm text-gray-900">{candidate.name}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{candidate.matchScore}%</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{candidate.score || candidate.matchScore || 0}%</td>
                 <td className="px-4 py-3">
                   <button onClick={() => handleViewDetails(candidate)} className="text-blue-600 hover:underline text-sm font-medium">View Details</button>
                 </td>
@@ -218,12 +239,12 @@ const JobDetail = ({ onBack }) => { // HAPUS 'job' dari props agar tidak bentrok
       </div>
 
       {/* Back Button */}
-      <div className="mt-6 flex">
+      {/* <div className="mt-6 flex">
         <Link href="/dashboard/job-opening" className="flex items-center gap-2 px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           Back to Job Opening
         </Link>
-      </div>
+      </div> */}
 
       {/* Modals */}
       <UploadCV isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} onUpload={handleUpload} jobId={params.id} />

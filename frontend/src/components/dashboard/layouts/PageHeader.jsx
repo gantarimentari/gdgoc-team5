@@ -16,19 +16,21 @@ export default function Pageheader ({
     <div >
       <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-              <button
-                onClick={onAddClick}
-                className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-              >
-                <span className="text-xl">+</span>
-                {addButtonText}
-              </button>
+              {addButtonText && onAddClick && (
+                <button
+                  onClick={onAddClick}
+                  className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  <span className="text-xl">+</span>
+                  {addButtonText}
+                </button>
+              )}
             </div>
       
             {/* Filter Tabs & View Toggle */}
             <div className="flex justify-between items-center mb-6">
               {/* Filter Tabs */}
-              <div className="flex gap-2 bg-white rounded-lg p-1 border border-gray-200">
+              {/* <div className="flex gap-2 bg-white rounded-lg p-1 border border-gray-200">
                 <button
                   onClick={() => setActiveFilter('all')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -59,7 +61,7 @@ export default function Pageheader ({
                 >
                   Closed {counts.closed}
                 </button>
-              </div>
+              </div> */}
       
               {/* View Toggle */}
               <div className="flex gap-2">

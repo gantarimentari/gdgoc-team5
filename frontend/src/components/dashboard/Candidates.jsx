@@ -162,22 +162,22 @@ const Candidates = ({ onNavigateToDetail }) => {
   });
 
   // Count for filter tabs
-  const counts = {
-    all: candidates.length,
-    needsReview: candidates.filter(c => c.status === 'Needs Review').length,
-    interview: candidates.filter(c => c.status === 'Interview').length,
-    accepted: candidates.filter(c => c.status === 'Accepted').length,
-    rejected: candidates.filter(c => c.status === 'Rejected').length
-  };
+  // const counts = {
+  //   all: candidates.length,
+  //   needsReview: candidates.filter(c => c.status === 'Needs Review').length,
+  //   interview: candidates.filter(c => c.status === 'Interview').length,
+  //   accepted: candidates.filter(c => c.status === 'Accepted').length,
+  //   rejected: candidates.filter(c => c.status === 'Rejected').length
+  // };
 
   const handleCandidateClick = (candidate) => {
     setSelectedCandidate(candidate);
     setIsDetailModalOpen(true);
   };
 
-  const handleUploadCV = () => {
-    setIsUploadModalOpen(true);
-  };
+  // const handleUploadCV = () => {
+  //   setIsUploadModalOpen(true);
+  // };
 
   const handleAddCandidate = (newCandidate) => {
     // Add new candidate to the list
@@ -204,20 +204,20 @@ const Candidates = ({ onNavigateToDetail }) => {
       {/* Header */}
       <Pageheader 
         title="Candidates" 
-        addButtonText="Upload CV"
-        onAddClick={handleUploadCV}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-        counts={counts}
+        // addButtonText="Upload CV"
+        // onAddClick={handleUploadCV}
+        // activeFilter={activeFilter}
+        // setActiveFilter={setActiveFilter}
+        // counts={counts}
         viewMode={viewMode}
         setViewMode={setViewMode}
-        filterOptions={[
-          { id: 'all', label: 'All Candidates' },
-          { id: 'needsReview', label: 'Needs Review' },
-          { id: 'interview', label: 'Interview' },
-          { id: 'accepted', label: 'Accepted' },
-          { id: 'rejected', label: 'Rejected' }
-        ]}
+        // filterOptions={[
+        //   { id: 'all', label: 'All Candidates' },
+        //   { id: 'needsReview', label: 'Needs Review' },
+        //   { id: 'interview', label: 'Interview' },
+        //   { id: 'accepted', label: 'Accepted' },
+        //   { id: 'rejected', label: 'Rejected' }
+        // ]}
       />
 
       {/* Candidates Grid/List */}
@@ -248,11 +248,9 @@ const Candidates = ({ onNavigateToDetail }) => {
             
             {/* Status Badge */}
             <div className="flex items-center gap-2 mb-3">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(candidate.status)}`}>
-                {candidate.status}
-              </span>
+              
               {candidate.score && (
-                <span className="text-xs text-gray-600">Score: {candidate.score}</span>
+                <span className="text-xs text-gray-600">Score: {candidate.score}/100</span>
               )}
             </div>
 
@@ -273,7 +271,7 @@ const Candidates = ({ onNavigateToDetail }) => {
             {/* Footer with Applied Date and Arrow */}
             <div className="flex justify-between items-center pt-4 border-t border-gray-100">
               <div className="text-sm text-gray-600">
-                Applied: {new Date(candidate.appliedDate).toLocaleDateString()}
+                Added: {new Date(candidate.appliedDate).toLocaleDateString()}
               </div>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -296,13 +294,6 @@ const Candidates = ({ onNavigateToDetail }) => {
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
         candidate={selectedCandidate}
-      />
-
-      {/* Upload CV Modal */}
-      <UploadCV 
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        onUpload={handleAddCandidate}
       />
     </div>
   );

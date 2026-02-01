@@ -23,8 +23,8 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
     const payload = {
       title: formData.roleTitle,
       description: formData.description,
-      status: formData.state, // Kirim status ke backend (Active/Closed)
-      category: formData.roleCategory // Kirim category juga
+      // status: formData.state, // Kirim status ke backend (Active/Closed)
+      // category: formData.roleCategory // Kirim category juga
     };
 
     // Pastikan deskripsi lebih dari 10 karakter sesuai aturan BE
@@ -39,9 +39,9 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
     // Reset form
     setFormData({
       roleTitle: '',
-      roleCategory: '',
+      // roleCategory: '',
       description: '',
-      state: 'Active'
+      // state: 'Active'
     });
 
     // Close modal
@@ -85,7 +85,7 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
           </div>
 
           {/* Role Category */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Role Category
             </label>
@@ -100,7 +100,7 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
             >
               
             </input>
-          </div>
+          </div> */}
 
           {/* Description */}
           <div>
@@ -119,7 +119,7 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
           </div>
 
           {/* State */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Status
             </label>
@@ -132,7 +132,7 @@ const AddNewJob = ({ isOpen, onClose, onAddJob }) => {
               <option value="Active">Active</option>
               <option value="Closed">Closed</option>
             </select>
-          </div>
+          </div> */}
 
           {/* Buttons */}
           <div className="flex gap-3 pt-4">

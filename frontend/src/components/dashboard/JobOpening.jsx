@@ -15,17 +15,16 @@ const JobOpening = ({ jobs: propJobs }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // FIX: Fungsi mapping ini sekarang bisa membaca 'data.jobs' dari Backend kamu
   const mapJobsData = (response) => {
     const jobsArray = response?.data?.jobs || (Array.isArray(response) ? response : []);
     
     return jobsArray.map(job => ({
       ...job,
-      // Pastikan nama field sinkron antara DB (title) dan UI (roleTitle)
+  
       roleTitle: job.title || job.roleTitle || "Untitled Role",
       roleCategory: job.roleCategory || job.category || "General",
       state: job.state || job.status || "Active",
-      candidateCount: job.candidateCount || 0
+      candidateCount: job.candidateCount || job.candidates?.length || 0
     }));
   };
 
@@ -71,17 +70,17 @@ const JobOpening = ({ jobs: propJobs }) => {
 
   // Filter & Counts (Tetap sama)
   const filteredJobs = jobs.filter(job => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'active') return job.state === 'Active';
-    if (activeFilter === 'closed') return job.state === 'Closed';
+    // if (activeFilter === 'all') return true;
+    // if (activeFilter === 'active') return job.state === 'Active';
+    // if (activeFilter === 'closed') return job.state === 'Closed';
     return true;
   });
 
-  const counts = {
-    all: jobs.length,
-    active: jobs.filter(j => j.state === 'Active').length,
-    closed: jobs.filter(j => j.state === 'Closed').length
-  };
+  // const counts = {
+  //   all: jobs.length,
+  //   active: jobs.filter(j => j.state === 'Active').length,
+  //   closed: jobs.filter(j => j.state === 'Closed').length
+  // };
 
   return (
     <div className="p-6">
@@ -91,7 +90,7 @@ const JobOpening = ({ jobs: propJobs }) => {
         onAddClick={() => setIsModalOpen(true)}
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
-        counts={counts}
+        // counts={counts}
         viewMode={viewMode}
         setViewMode={setViewMode}
       />
@@ -126,11 +125,11 @@ const JobOpening = ({ jobs: propJobs }) => {
             >
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-lg font-semibold text-gray-900">{job.roleTitle}</h3>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                {/* <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                   job.state === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-                }`}>{job.state}</span>
+                }`}>{job.state}</span> */}
               </div>
-              <p className="text-sm text-gray-600 mb-4">{job.roleCategory}</p>
+              {/* <p className="text-sm text-gray-600 mb-4">{job.roleCategory}</p> */}
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                 <div className="flex items-center gap-2 text-gray-700">
                   <UsersIcon className="w-4 h-4" />

@@ -119,3 +119,25 @@ export const deleteJob = async (id) => {
 
   return response.json(); // Mengembalikan respon sukses dari Backend
 };
+
+export const uploadCV = async (jobId, file) => {
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+
+  formData.append('cv', file); 
+
+  const response = await fetch(`${BASE_URL}/jobs/${jobId}/candidates`, { // Ubah endpoint-nya
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Gagal upload CV");
+  }
+
+  return await response.json();
+};

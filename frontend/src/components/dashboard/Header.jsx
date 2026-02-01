@@ -19,8 +19,7 @@ const Header = () => {
   const [userData, setUserData] = useState(DUMMY_USER_DATA);
   const [loading, setLoading] = useState(false);
 
-  // TODO: Fetch user data from API
- // Di dalam Header.jsx
+
 useEffect(() => {
   const savedName = localStorage.getItem("userName");
   if (savedName) {

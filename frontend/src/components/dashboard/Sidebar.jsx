@@ -10,7 +10,7 @@ export default function Sidebar(){
   const menu = [
     {id: 'dashboard', icon: DBHomeIcon, label:'Dashboard', href: '/dashboard' },
     {id: 'job-opening', icon: BagIcon, label:'Job Opening', href: '/dashboard/job-opening' },
-    {id: 'candidates', icon: UserGroupIcon, label:'Candidates', href: '/dashboard/candidates' },
+    // {id: 'candidates', icon: UserGroupIcon, label:'Candidates', href: '/dashboard/candidates' },
   ];
 
   return(

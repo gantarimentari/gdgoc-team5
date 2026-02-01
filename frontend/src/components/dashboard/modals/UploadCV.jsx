@@ -1,9 +1,33 @@
 'use client';
 import React, { useState } from 'react';
+import { uploadCV } from '@/services/api';
 
 const UploadCV = ({ isOpen, onClose, onUpload, jobId }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+
+
+  const handleUpload = async () => {
+  if (selectedFiles.length === 0) return;
+  setUploading(true);
+
+  try {
+    // Kita kirim filenya satu-satu ke server
+    for (const file of selectedFiles) {
+      await uploadCV(jobId, file);
+    }
+
+    alert(' CV berhasil diunggah! AI sedang memproses di latar belakang.');
+    onUpload([]); // Panggil ini untuk refresh list atau kasih feedback
+    setSelectedFiles([]);
+    onClose();
+  } catch (error) {
+    console.error('Upload gagal:', error);
+    alert('Ada masalah pas upload: ' + error.message);
+  } finally {
+    setUploading(false);
+  }
+};
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -26,63 +50,7 @@ const UploadCV = ({ isOpen, onClose, onUpload, jobId }) => {
     e.preventDefault();
   };
 
-  const handleUpload = async () => {
-    if (selectedFiles.length === 0) return;
-
-    setUploading(true);
-
-    try {
-      // TODO: Implement actual API call to upload CVs and process with Gemini AI
-      // const formData = new FormData();
-      // selectedFiles.forEach((file, index) => {
-      //   formData.append(`cv_${index}`, file);
-      // });
-      // formData.append('jobId', jobId);
-      
-      // const response = await fetch('/api/cv/upload', {
-      //   method: 'POST',
-      //   body: formData
-      // });
-      // const result = await response.json();
-
-      // Simulate upload dan AI screening
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // For now, create mock candidates from uploaded CVs
-      const mockCandidates = selectedFiles.map((file, index) => ({
-        id: Date.now() + index,
-        cn: `CN-${String(Date.now() + index).slice(-4)}`,
-        name: file.name.replace('.pdf', '').replace(/_/g, ' '),
-        matchScore: Math.floor(Math.random() * 30) + 70, // 70-100%
-        status: 'needs-review',
-        experience: `${Math.floor(Math.random() * 8) + 2} years`,
-        skills: 'React, Node.js, TypeScript',
-        cvFile: file,
-        aiAnalysis: {
-          matchScore: Math.floor(Math.random() * 30) + 70,
-          skillsBadges: ['React', 'Node.js', 'TypeScript', 'AWS'],
-          strengths: [
-            'Strong match for Senior Software Engineer with relevant experience in React & Node.js',
-            'Senior level developer with relevant experience',
-            'Extensive experience in full-stack development'
-          ],
-          weaknesses: [
-            'Limited experience with cloud platforms',
-            'No mention of leadership experience'
-          ]
-        }
-      }));
-
-      onUpload(mockCandidates);
-      setSelectedFiles([]);
-      onClose();
-    } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
-    } finally {
-      setUploading(false);
-    }
-  };
+  
 
   if (!isOpen) return null;
 
