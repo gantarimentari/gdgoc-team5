@@ -68,7 +68,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
-    message: 'Server is running',
+    message: '🚀 FIX CORS AKTIF: Vercel Authorized!',
     timestamp: new Date().toISOString(),
   });
 });
