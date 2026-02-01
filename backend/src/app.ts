@@ -12,12 +12,18 @@ const app: Application = express();
 // Security middleware
 app.use(helmet());
 
+
 // CORS configuration
 const corsOptions = {
   origin: process.env.CORS_ORIGIN || 'http://localhost:5000',
   credentials: true,
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
