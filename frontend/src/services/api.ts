@@ -1,4 +1,3 @@
-// Ambil URL dari .env.local yang sudah kamu buat
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAllJobs = async () => {
@@ -104,7 +103,7 @@ export const getJobById = async (id) => {
 export const deleteJob = async (id) => {
   const token = localStorage.getItem('token'); // Ambil kunci akses kamu
   
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`, {
+  const response = await fetch(`${BASE_URL}/jobs/${id}`, {
     method: 'DELETE', // Gunakan metode DELETE
     headers: {
       'Authorization': `Bearer ${token}`, // Sertakan token agar tidak Error 401
