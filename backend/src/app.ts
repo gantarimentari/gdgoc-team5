@@ -9,8 +9,7 @@ import routes from './routes/index.js';
 
 const app: Application = express();
 
-// Security middleware
-app.use(helmet());
+
 
 
 // CORS configuration
@@ -24,6 +23,9 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Security middleware
+app.use(helmet());
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
