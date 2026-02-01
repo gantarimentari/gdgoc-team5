@@ -9,23 +9,47 @@ import routes from './routes/index.js';
 
 const app: Application = express();
 
-
+const allowedOrigins = [
+  'https://ai-recruitment-screening-gdgoc.vercel.app', // Link Vercel kamu
+  'http://localhost:3000',                            // Local development
+  'http://localhost:5173'                             // Local development (Vite)
+];
 
 
 // CORS configuration
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5000',
-  credentials: true,
-};
-// app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: process.env.CORS_ORIGIN || 'http://localhost:5000',
+//   credentials: true,
+// };
+// // app.use(cors(corsOptions));
+// app.use(cors({
+//     origin: '*', 
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+// }));
 app.use(cors({
-    origin: '*', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+  origin: (origin, callback) => {
+    // Izinkan akses jika tidak ada origin (seperti curl/mobile) atau jika origin ada di daftar/Vercel
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      // Jika butuh debug, kamu bisa log: console.log('Blocked Origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200
 }));
 
+
+
 // Security middleware
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false, // Memastikan resource bisa diakses lintas domain
+}));
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
